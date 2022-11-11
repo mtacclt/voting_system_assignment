@@ -1,12 +1,14 @@
 package voting_system;
 
 
+
 import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.stream.IntStream;
+import java.util.Random;
 
 public class VotingSystem {
     static int candidateNum = 3;
@@ -26,6 +28,8 @@ public class VotingSystem {
         Date votingStartTime = new Date(start);
         Date votingEndTime = new Date(end);
 
+        Random random = new Random();
+
 //        for(int i =0 ; i< 3 ; i ++){
 //            new Thread(new Candidate(), "Candidate "+(i+1)).start();
 //        }
@@ -37,15 +41,19 @@ public class VotingSystem {
             new Thread(new Voter(), "Voter number "+voterNumber).start();
             voterNumber++;
 
-//            if (voterNumber % 100 == 0){
-//
-//            }
+            if ((voterNumber % 1000 == 0) & (random.nextInt(100)<5) ){
+                System.out.println("Voting has ended early!");
+                votingEndTime.setTime(System.currentTimeMillis());
+                break;
+            }
 
             try {
                 Thread.sleep(1);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
+
+
         }
 
         //metrics
